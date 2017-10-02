@@ -1,21 +1,29 @@
 #include "DumbTerminalEmulator.h"
-#include <QToolBar>
-#include <iostream>
+#include <qdebug.h>
 #include "console.h"
 
 DumbTerminalEmulator::DumbTerminalEmulator(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	serial = new QSerialPort(this);
+	serial = new QSerialPort("COM1", this);
 	console = new Console;
 	setCentralWidget(console);
 
 	console->setLocalEchoEnabled(true);
 
+	//Set defaults
+	serial->setPortName("COM1");
+	serial->setBaudRate(QSerialPort::Baud1200);
+	serial->setDataBits(QSerialPort::Data8);
+	serial->setParity(QSerialPort::EvenParity);
+	serial->setStopBits(QSerialPort::OneStop);
+	serial->setFlowControl(QSerialPort::NoFlowControl);
+	
+
 	//Connection menu connects
 	connect(ui.actionConnect, &QAction::triggered, this, &DumbTerminalEmulator::connectSerial);
-	connect(ui.actionConnect, &QAction::triggered, this, &DumbTerminalEmulator::disconnectSerial);
+	connect(ui.actionDisconnect, &QAction::triggered, this, &DumbTerminalEmulator::disconnectSerial);
 
 	//Baud rate connects
 	connect(ui.action1200, &QAction::triggered, this, &DumbTerminalEmulator::baudSet);
@@ -48,6 +56,8 @@ DumbTerminalEmulator::DumbTerminalEmulator(QWidget *parent)
 	//Reading Connect
 	connect(serial, &QSerialPort::readyRead, this, &DumbTerminalEmulator::readData);
 
+	//Writing Connect
+	connect(console, &Console::getData, this, &DumbTerminalEmulator::writeData);
 }
 
 
@@ -64,12 +74,23 @@ void DumbTerminalEmulator::readData()
 
 void DumbTerminalEmulator::connectSerial()
 {
-	serial->open(QIODevice::ReadWrite);
+	if (!serial->open(QIODevice::ReadWrite)) {
+		qDebug() << serial->errorString();
+		return;
+	}
+	else
+	{
+		qDebug() << serial->isOpen();
+		qDebug() << serial->baudRate();
+		qDebug() << serial->portName();
+	}
 }
 
 void DumbTerminalEmulator::disconnectSerial()
 {
+
 	if (serial->isOpen())
+		serial->flush();
 		serial->close();
 }
 
@@ -90,7 +111,43 @@ void DumbTerminalEmulator::baudSet()
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
-	serial->setBaudRate(baudRate);
+	switch (baudRate)
+	{
+		case 1200:
+			serial->setBaudRate(QSerialPort::Baud1200);
+		break;
+
+		case 2400:
+			serial->setBaudRate(QSerialPort::Baud2400);
+		break;
+
+		case 4800:
+			serial->setBaudRate(QSerialPort::Baud4800);
+		break;
+
+		case 9600:
+			serial->setBaudRate(QSerialPort::Baud9600);
+		break;
+
+		case 19200:
+			serial->setBaudRate(QSerialPort::Baud19200);
+		break;
+
+		case 38400:
+			serial->setBaudRate(QSerialPort::Baud38400);
+		break;
+
+		case 57600:
+			serial->setBaudRate(QSerialPort::Baud57600);
+		break;
+
+		case 115200:
+			serial->setBaudRate(QSerialPort::Baud115200);
+		break;
+
+	default:
+		break;
+	}
 }
 
 void DumbTerminalEmulator::port1Enable()
@@ -104,7 +161,7 @@ void DumbTerminalEmulator::port1Enable()
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
-	serial->setPortName("com1");
+	serial->setPortName("COM1");
 }
 
 void DumbTerminalEmulator::port2Enable()
@@ -118,7 +175,7 @@ void DumbTerminalEmulator::port2Enable()
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
-	serial->setPortName("com2");
+	serial->setPortName("COM2");
 }
 
 void DumbTerminalEmulator::port3Enable()
@@ -132,7 +189,7 @@ void DumbTerminalEmulator::port3Enable()
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
-	serial->setPortName("com3");
+	serial->setPortName("COM3");
 }
 
 void DumbTerminalEmulator::port4Enable()
@@ -146,7 +203,7 @@ void DumbTerminalEmulator::port4Enable()
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
-	serial->setPortName("com4");
+	serial->setPortName("COM4");
 }
 
 

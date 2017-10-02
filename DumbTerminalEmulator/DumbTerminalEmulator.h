@@ -18,6 +18,7 @@ private:
 	QSerialPort *serial;
 	Console *console;
 
+
 private slots:
 
 	void writeData(const QByteArray &data);
