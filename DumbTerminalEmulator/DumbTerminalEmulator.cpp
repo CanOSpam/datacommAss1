@@ -45,6 +45,9 @@ DumbTerminalEmulator::DumbTerminalEmulator(QWidget *parent)
 	connect(ui.actionOneAndAHalfStop, &QAction::triggered, this, &DumbTerminalEmulator::stop1_5);
 	connect(ui.actionTwoStop, &QAction::triggered, this, &DumbTerminalEmulator::stop2);
 
+	//Reading Connect
+	connect(serial, &QSerialPort::readyRead, this, &DumbTerminalEmulator::readData);
+
 }
 
 
@@ -55,7 +58,8 @@ void DumbTerminalEmulator::writeData(const QByteArray &data)
 
 void DumbTerminalEmulator::readData()
 {
-	
+	QByteArray data = serial->readAll();
+	console->putData(data);
 }
 
 void DumbTerminalEmulator::connectSerial()
