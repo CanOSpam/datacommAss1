@@ -20,9 +20,27 @@ private:
 
 private slots:
 
-	void openPort();
-	void closePort();
 	void writeData(const QByteArray &data);
 	void readData();
-	void openConfig();
+	void connectSerial();
+	void disconnectSerial();
+
+	//Set Baud Rate
+	void baudSet();
+	
+	//Set Com port
+	void port1Enable();
+	void port2Enable();
+	void port3Enable();
+	void port4Enable();
+
+	//Set Parity
+	void setEven();
+	void setOdd();
+	void setNone();
+
+	//Set Stop Bits
+	void stop1();
+	void stop1_5();
+	void stop2();
 };
