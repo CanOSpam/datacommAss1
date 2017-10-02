@@ -1,5 +1,6 @@
 #include "DumbTerminalEmulator.h"
 #include <qdebug.h>
+#include <qactiongroup.h>
 #include "console.h"
 
 DumbTerminalEmulator::DumbTerminalEmulator(QWidget *parent)
@@ -19,7 +20,33 @@ DumbTerminalEmulator::DumbTerminalEmulator(QWidget *parent)
 	serial->setParity(QSerialPort::EvenParity);
 	serial->setStopBits(QSerialPort::OneStop);
 	serial->setFlowControl(QSerialPort::NoFlowControl);
-	
+
+	//QAction Groups
+	comGroup = new QActionGroup(this);
+	comGroup->addAction(ui.actionCom_1);
+	comGroup->addAction(ui.actionCom_2);
+	comGroup->addAction(ui.actionCom_3);
+	comGroup->addAction(ui.actionCom_4);
+
+	baudGroup = new QActionGroup(this);
+	baudGroup->addAction(ui.action1200);
+	baudGroup->addAction(ui.action2400);
+	baudGroup->addAction(ui.action4800);
+	baudGroup->addAction(ui.action9600);
+	baudGroup->addAction(ui.action19200);
+	baudGroup->addAction(ui.action38400);
+	baudGroup->addAction(ui.action57600);
+	baudGroup->addAction(ui.action115200);
+
+	parityGroup = new QActionGroup(this);
+	parityGroup->addAction(ui.actionEven);
+	parityGroup->addAction(ui.actionOdd);
+	parityGroup->addAction(ui.actionNone);
+
+	stopGroup = new QActionGroup(this);
+	stopGroup->addAction(ui.actionOneStop);
+	stopGroup->addAction(ui.actionOneAndAHalfStop);
+	stopGroup->addAction(ui.actionTwoStop);
 
 	//Connection menu connects
 	connect(ui.actionConnect, &QAction::triggered, this, &DumbTerminalEmulator::connectSerial);
@@ -98,16 +125,6 @@ void DumbTerminalEmulator::baudSet()
 {
 	int baudRate =((QAction*)QObject::sender())->text().toInt();
 
-	//Uncheck all options
-	ui.action1200->setChecked(false);
-	ui.action2400->setChecked(false);
-	ui.action4800->setChecked(false);
-	ui.action9600->setChecked(false);
-	ui.action19200->setChecked(false);
-	ui.action38400->setChecked(false);
-	ui.action57600->setChecked(false);
-	ui.action115200->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -152,12 +169,6 @@ void DumbTerminalEmulator::baudSet()
 
 void DumbTerminalEmulator::port1Enable()
 {
-	//Uncheck all options
-	ui.actionCom_1->setChecked(false);
-	ui.actionCom_2->setChecked(false);
-	ui.actionCom_3->setChecked(false);
-	ui.actionCom_4->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -166,12 +177,6 @@ void DumbTerminalEmulator::port1Enable()
 
 void DumbTerminalEmulator::port2Enable()
 {
-	//Uncheck all options
-	ui.actionCom_1->setChecked(false);
-	ui.actionCom_2->setChecked(false);
-	ui.actionCom_3->setChecked(false);
-	ui.actionCom_4->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -180,12 +185,6 @@ void DumbTerminalEmulator::port2Enable()
 
 void DumbTerminalEmulator::port3Enable()
 {
-	//Uncheck all options
-	ui.actionCom_1->setChecked(false);
-	ui.actionCom_2->setChecked(false);
-	ui.actionCom_3->setChecked(false);
-	ui.actionCom_4->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -194,12 +193,6 @@ void DumbTerminalEmulator::port3Enable()
 
 void DumbTerminalEmulator::port4Enable()
 {
-	//Uncheck all options
-	ui.actionCom_1->setChecked(false);
-	ui.actionCom_2->setChecked(false);
-	ui.actionCom_3->setChecked(false);
-	ui.actionCom_4->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -210,11 +203,6 @@ void DumbTerminalEmulator::port4Enable()
 //Set Parity Functions
 void DumbTerminalEmulator::setEven()
 {
-	//Uncheck all options
-	ui.actionEven->setChecked(false);
-	ui.actionOdd->setChecked(false);
-	ui.actionNone->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -223,11 +211,6 @@ void DumbTerminalEmulator::setEven()
 }
 void DumbTerminalEmulator::setOdd()
 {
-	//Uncheck all options
-	ui.actionEven->setChecked(false);
-	ui.actionOdd->setChecked(false);
-	ui.actionNone->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -236,11 +219,6 @@ void DumbTerminalEmulator::setOdd()
 
 void DumbTerminalEmulator::setNone()
 {
-	//Uncheck all options
-	ui.actionEven->setChecked(false);
-	ui.actionOdd->setChecked(false);
-	ui.actionNone->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -251,11 +229,6 @@ void DumbTerminalEmulator::setNone()
 //Stop Bit Functions
 void DumbTerminalEmulator::stop1()
 {
-	//Uncheck all options
-	ui.actionOneStop->setChecked(false);
-	ui.actionOneAndAHalfStop->setChecked(false);
-	ui.actionTwoStop->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -264,11 +237,6 @@ void DumbTerminalEmulator::stop1()
 
 void DumbTerminalEmulator::stop1_5()
 {
-	//Uncheck all options
-	ui.actionOneStop->setChecked(false);
-	ui.actionOneAndAHalfStop->setChecked(false);
-	ui.actionTwoStop->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 
@@ -277,11 +245,6 @@ void DumbTerminalEmulator::stop1_5()
 
 void DumbTerminalEmulator::stop2()
 {
-	//Uncheck all options
-	ui.actionOneStop->setChecked(false);
-	ui.actionOneAndAHalfStop->setChecked(false);
-	ui.actionTwoStop->setChecked(false);
-
 	//Check selected option
 	((QAction*)QObject::sender())->setChecked(true);
 

@@ -18,6 +18,11 @@ private:
 	QSerialPort *serial;
 	Console *console;
 
+	QActionGroup *comGroup;
+	QActionGroup *baudGroup;
+	QActionGroup *parityGroup;
+	QActionGroup *stopGroup;
+
 
 private slots:
 
