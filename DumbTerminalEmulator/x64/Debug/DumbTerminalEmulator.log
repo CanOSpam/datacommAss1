@@ -1,3 +1,7 @@
-﻿  DumbTerminalEmulator.cpp
+﻿  Moc'ing console.h...
+  console.cpp
+  DumbTerminalEmulator.cpp
+  moc_console.cpp
+  Generating Code...
   DumbTerminalEmulator.vcxproj -> C:\Users\Tim\Documents\Datacomm_(option)\datacommAss1\x64\Debug\DumbTerminalEmulator.exe
   DumbTerminalEmulator.vcxproj -> C:\Users\Tim\Documents\Datacomm_(option)\datacommAss1\x64\Debug\DumbTerminalEmulator.pdb (Full PDB)

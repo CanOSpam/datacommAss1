@@ -1,3 +1,47 @@
+/*------------------------------------------------------------------------------------------------------------------
+-- SOURCE FILE: DumbTerminalEmulator.cpp - An application that can send and receive characters 
+--					over an RS232 connection.
+--
+-- PROGRAM: DumbTerminalEmulator
+--
+-- FUNCTIONS:
+-- Serial port operation functions:
+--		void writeData(const QByteArray &data)
+--		void readData()
+--		void connectSerial()
+--		void disconnectSerial()
+--
+-- Serial port Configuration functions:
+--		void baudSet()
+--		void port1Enable()
+--		void port2Enable()
+--		void port3Enable()
+--		void port4Enable()
+--		void setEven()
+--		void setOdd()
+--		void setNone()
+--		void stop1()
+--		void stop1_5()
+--		void stop2()
+--
+--
+-- DATE: October 04, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- NOTES:
+-- The program will take configuration from the user, use that configuration to open a serial port, and then use
+-- that serial port to communicate with another RS232 terminal application.
+--
+-- The user can configure the com port, the baud rate, the parity, and the stop bits of the connection.
+-- 
+-- Local echo is disabled, but may be enabled in the source code on line 58.
+----------------------------------------------------------------------------------------------------------------------*/
+
 #include "DumbTerminalEmulator.h"
 #include <qdebug.h>
 #include <qactiongroup.h>
@@ -11,7 +55,7 @@ DumbTerminalEmulator::DumbTerminalEmulator(QWidget *parent)
 	console = new Console;
 	setCentralWidget(console);
 
-	console->setLocalEchoEnabled(true);
+	console->setLocalEchoEnabled(false);
 
 	//Set defaults
 	serial->setPortName("COM1");
@@ -88,17 +132,77 @@ DumbTerminalEmulator::DumbTerminalEmulator(QWidget *parent)
 }
 
 
+
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: writeData
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void writeData(const QByteArray &data)
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to write (send) data to the serial port. This function is called when a keystroke is registered
+-- in console.cpp.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::writeData(const QByteArray &data)
 {
 	serial->write(data);
 }
 
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: readData
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void readData()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to read data from the serial port. This function is called when the serial port object emits a 
+-- readyRead signal.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::readData()
 {
 	QByteArray data = serial->readAll();
 	console->putData(data);
 }
 
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: connectSerial
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void connectSerial()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to open a serial port using the configuration options that have been set by the user.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::connectSerial()
 {
 	if (!serial->open(QIODevice::ReadWrite)) {
@@ -113,6 +217,25 @@ void DumbTerminalEmulator::connectSerial()
 	}
 }
 
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: disconnectSerial
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void disconnectSerial()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to flush and close the open serial port.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::disconnectSerial()
 {
 
@@ -121,6 +244,27 @@ void DumbTerminalEmulator::disconnectSerial()
 		serial->close();
 }
 
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: baudSet
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void baudSet()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the baud rate that the serial port will use. This function is called by all of the
+-- baud set actions in the baud setting action group. The function reads the text value in the baud actions, and assigns
+-- that value to the serial port baud rate.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::baudSet()
 {
 	int baudRate =((QAction*)QObject::sender())->text().toInt();
@@ -167,6 +311,27 @@ void DumbTerminalEmulator::baudSet()
 	}
 }
 
+
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: port1Enable
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void port1Enable()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use COM1 as the communications port. This function is called by the
+-- COM1 action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::port1Enable()
 {
 	//Check selected option
@@ -175,6 +340,27 @@ void DumbTerminalEmulator::port1Enable()
 	serial->setPortName("COM1");
 }
 
+
+/*--------- COMM SET FUNCTIONS ---------*/
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: port2Enable
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void port2Enable()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use COM2 as the communications port. This function is called by the
+-- COM2 action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::port2Enable()
 {
 	//Check selected option
@@ -183,6 +369,25 @@ void DumbTerminalEmulator::port2Enable()
 	serial->setPortName("COM2");
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: port3Enable
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void port3Enable()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use COM3 as the communications port. This function is called by the
+-- COM3 action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::port3Enable()
 {
 	//Check selected option
@@ -191,6 +396,25 @@ void DumbTerminalEmulator::port3Enable()
 	serial->setPortName("COM3");
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: port4Enable
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void port4Enable()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use COM4 as the communications port. This function is called by the
+-- COM4 action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::port4Enable()
 {
 	//Check selected option
@@ -199,8 +423,25 @@ void DumbTerminalEmulator::port4Enable()
 	serial->setPortName("COM4");
 }
 
-
-//Set Parity Functions
+/*--------- PARITY SET FUNCTIONS ---------*/
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: setEven
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void setEven()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use 'even' parity. This function is called by the setEven action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::setEven()
 {
 	//Check selected option
@@ -209,6 +450,25 @@ void DumbTerminalEmulator::setEven()
 	serial->setParity(QSerialPort::EvenParity);
 
 }
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: setOdd
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void setOdd()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use 'odd' parity. This function is called by the setEven action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::setOdd()
 {
 	//Check selected option
@@ -217,6 +477,24 @@ void DumbTerminalEmulator::setOdd()
 	serial->setParity(QSerialPort::OddParity);
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: setNone
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void setNone()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use 'none' parity. This function is called by the setEven action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::setNone()
 {
 	//Check selected option
@@ -226,7 +504,25 @@ void DumbTerminalEmulator::setNone()
 }
 
 
-//Stop Bit Functions
+/*--------- PARITY SET FUNCTIONS ---------*/
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: stop1
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void stop1()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use one stop bit. This function is called by the 1 stop action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::stop1()
 {
 	//Check selected option
@@ -235,6 +531,25 @@ void DumbTerminalEmulator::stop1()
 	serial->setStopBits(QSerialPort::OneStop);
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: stop1_5
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void stop1_5()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use one and a half stop bits. 
+-- This function is called by the 1.5 stop action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::stop1_5()
 {
 	//Check selected option
@@ -243,6 +558,24 @@ void DumbTerminalEmulator::stop1_5()
 	serial->setStopBits(QSerialPort::OneAndHalfStop);
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: stop2
+--
+-- DATE: October 4th, 2017
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void stop2()
+--
+-- RETURNS: void
+--
+-- NOTES:
+-- Call this function to set the serial port to use one stop bit. This function is called by the 2 stop action.
+----------------------------------------------------------------------------------------------------------------------*/
 void DumbTerminalEmulator::stop2()
 {
 	//Check selected option
