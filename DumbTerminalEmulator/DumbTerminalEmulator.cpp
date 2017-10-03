@@ -59,11 +59,11 @@ DumbTerminalEmulator::DumbTerminalEmulator(QWidget *parent)
 
 	//Set defaults
 	serial->setPortName("COM1");
-	serial->setBaudRate(QSerialPort::Baud1200);
+	serial->setBaudRate(QSerialPort::Baud2400);
 	serial->setDataBits(QSerialPort::Data8);
-	serial->setParity(QSerialPort::EvenParity);
+	serial->setParity(QSerialPort::NoParity);
 	serial->setStopBits(QSerialPort::OneStop);
-	serial->setFlowControl(QSerialPort::NoFlowControl);
+	serial->setFlowControl(QSerialPort::HardwareControl);
 
 	//QAction Groups
 	comGroup = new QActionGroup(this);

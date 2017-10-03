@@ -1,7 +1,16 @@
-﻿  Moc'ing console.h...
+﻿  Moc'ing DumbTerminalEmulator.h...
+  Uic'ing DumbTerminalEmulator.ui...
+  Moc'ing console.h...
+  Rcc'ing DumbTerminalEmulator.qrc...
+RCC : warning : No resources in 'C:\Users\Tim\Documents\Test\datacommAss1\DumbTerminalEmulator\DumbTerminalEmulator.qrc'.
+  
   console.cpp
   DumbTerminalEmulator.cpp
   moc_console.cpp
+  moc_DumbTerminalEmulator.cpp
+  main.cpp
   Generating Code...
-  DumbTerminalEmulator.vcxproj -> C:\Users\Tim\Documents\Datacomm_(option)\datacommAss1\x64\Debug\DumbTerminalEmulator.exe
-  DumbTerminalEmulator.vcxproj -> C:\Users\Tim\Documents\Datacomm_(option)\datacommAss1\x64\Debug\DumbTerminalEmulator.pdb (Full PDB)
+  qrc_DumbTerminalEmulator.cpp
+  LINK : C:\Users\Tim\Documents\Test\datacommAss1\x64\Debug\\DumbTerminalEmulator.exe not found or not built by the last incremental link; performing full link
+  DumbTerminalEmulator.vcxproj -> C:\Users\Tim\Documents\Test\datacommAss1\x64\Debug\DumbTerminalEmulator.exe
+  DumbTerminalEmulator.vcxproj -> C:\Users\Tim\Documents\Test\datacommAss1\x64\Debug\DumbTerminalEmulator.pdb (Full PDB)
